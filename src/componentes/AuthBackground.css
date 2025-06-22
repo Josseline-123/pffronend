@@ -1,0 +1,19 @@
+.auth-background {
+  background-image: url('/img/Home.png'); /* Asegúrate de que esté en public/img */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white; /* fondo blanco en caso que no cargue imagen */
+}
+.auth-form-container {
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 2rem;
+  border-radius: 10px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
