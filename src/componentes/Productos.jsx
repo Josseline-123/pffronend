@@ -5,6 +5,7 @@ import { AuthContext } from '../context/AuthContext';
 // En Vite las variables de entorno empiezan con VITE_ y se acceden con import.meta.env
 const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
+
 function Productos() {
   const [productos, setProductos] = useState([]);
   const [cantidades, setCantidades] = useState({});

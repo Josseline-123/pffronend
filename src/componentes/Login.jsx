@@ -2,7 +2,10 @@ import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import './AuthBackground.css'; // Asegúrate de tener este archivo
+import './AuthBackground.css';
+
+// Usa la variable de entorno o localhost como respaldo
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
 const Login = () => {
   const { login } = useContext(AuthContext);
@@ -15,7 +18,7 @@ const Login = () => {
 
     try {
       const res = await axios.post(
-        'http://localhost:5000/api/auth/login',
+        `${BASE_URL}/api/auth/login`,
         { email, password },
         {
           headers: {
