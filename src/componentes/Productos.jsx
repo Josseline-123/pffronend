@@ -2,6 +2,9 @@ import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 
+// En Vite las variables de entorno empiezan con VITE_ y se acceden con import.meta.env
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+
 function Productos() {
   const [productos, setProductos] = useState([]);
   const [cantidades, setCantidades] = useState({});
@@ -17,7 +20,7 @@ function Productos() {
 
   const obtenerProductos = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/productos');
+      const res = await axios.get(`${BASE_URL}/api/productos`);
       setProductos(res.data);
     } catch (err) {
       console.error('❌ Error al cargar productos:', err);
@@ -31,7 +34,7 @@ function Productos() {
       if (precioMin) params.precioMin = precioMin;
       if (precioMax) params.precioMax = precioMax;
 
-      const res = await axios.get('http://localhost:5000/api/productos/filtro', { params });
+      const res = await axios.get(`${BASE_URL}/api/productos/filtro`, { params });
       setProductos(res.data);
     } catch (err) {
       console.error('❌ Error al filtrar productos:', err);
@@ -55,7 +58,7 @@ function Productos() {
     const cantidad = cantidades[productoId] || 1;
 
     try {
-      await axios.post('http://localhost:5000/api/carrito', { productoId, cantidad }, {
+      await axios.post(`${BASE_URL}/api/carrito`, { productoId, cantidad }, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -78,7 +81,6 @@ function Productos() {
             <option value="">Todas las categorías</option>
             <option value="perros">Perros</option>
             <option value="gatos">Gatos</option>
-    
           </select>
         </div>
         <div className="col-md-3">
@@ -117,12 +119,12 @@ function Productos() {
 
       {/* Lista de productos */}
       <div className="row">
-        {productos.map(producto => (
+        {productos.length > 0 ? productos.map(producto => (
           <div key={producto.id} className="col-md-4 mb-4">
             <div className="card h-100">
               {producto.imagen && (
                 <img
-                  src={`http://localhost:5000/uploads/${producto.imagen}`}
+                  src={`${BASE_URL}/uploads/${producto.imagen}`}
                   alt={producto.nombre}
                   className="card-img-top"
                   style={{ height: '200px', objectFit: 'cover' }}
@@ -156,10 +158,14 @@ function Productos() {
               </div>
             </div>
           </div>
-        ))}
+        )) : (
+          <p>No hay productos disponibles.</p>
+        )}
       </div>
     </div>
   );
 }
 
 export default Productos;
+
+
