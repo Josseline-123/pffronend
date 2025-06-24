@@ -9,13 +9,15 @@ function Checkout() {
   const [total, setTotal] = useState(0);
   const navigate = useNavigate();
 
+  const API_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+
   useEffect(() => {
     if (token) cargarCarrito();
   }, [token]);
 
   const cargarCarrito = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/carrito', {
+      const res = await axios.get(`${API_URL}/api/carrito`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -30,7 +32,7 @@ function Checkout() {
         setTotal(totalCalculado);
       }
     } catch (error) {
-      console.error('Error al cargar el carrito:', error);
+      console.error('❌ Error al cargar el carrito:', error);
     }
   };
 
@@ -41,18 +43,15 @@ function Checkout() {
         cantidad: item.cantidad,
       }));
 
-      const orden = {
-        productos,
-        total,
-      };
+      const orden = { productos, total };
 
       // Crear la orden
-      await axios.post('http://localhost:5000/api/ordenes', orden, {
+      await axios.post(`${API_URL}/api/ordenes`, orden, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
       // Vaciar el carrito en el backend
-      await axios.delete('http://localhost:5000/api/carrito', {
+      await axios.delete(`${API_URL}/api/carrito`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -62,9 +61,8 @@ function Checkout() {
 
       alert('✅ Compra realizada con éxito');
       navigate('/mis-ordenes');
-
     } catch (error) {
-      console.error('Error al confirmar compra:', error.response?.data || error);
+      console.error('❌ Error al confirmar compra:', error.response?.data || error);
       alert('❌ Error al realizar la compra');
     }
   };
@@ -93,5 +91,6 @@ function Checkout() {
 }
 
 export default Checkout;
+
 
 
