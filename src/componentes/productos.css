@@ -1,14 +1,14 @@
+/* Productos.css */
 .productos-page {
   display: flex;
-  height: 100%;
 }
 
-.productos-page .sidebar {
-  width: 200px;
+.productos-page > .sidebar {
+  width: 200px;      /* o el ancho que prefieras */
   flex-shrink: 0;
 }
 
-.productos-page .productos-content {
+.productos-page > .productos-content {
   flex-grow: 1;
   padding: 1rem;
 }
