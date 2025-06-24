@@ -19,6 +19,15 @@ const SubirProducto = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // <-- Debug: confirma que este handler se dispara y muestra los valores
+    console.log("👉 handleSubmit disparado con:", {
+      nombre,
+      descripcion,
+      precio,
+      categoria,
+      imagenFile,
+    });
+
     if (!token) {
       alert("Debes iniciar sesión para subir productos");
       return;
@@ -101,6 +110,7 @@ const SubirProducto = () => {
         <option value="">Selecciona una categoría</option>
         <option value="perros">Perros</option>
         <option value="gatos">Gatos</option>
+        <option value="otras">Otras mascotas</option>
       </select><br /><br />
 
       <label>Imagen:</label><br />
@@ -118,7 +128,3 @@ const SubirProducto = () => {
 };
 
 export default SubirProducto;
-
-
-
-
