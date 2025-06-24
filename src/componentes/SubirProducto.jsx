@@ -24,7 +24,7 @@ const SubirProducto = () => {
       return;
     }
 
-    // Validar que precio sea un número válido
+    // Validar que precio sea un número válido y positivo
     const precioNumero = parseFloat(precio);
     if (isNaN(precioNumero) || precioNumero <= 0) {
       alert("Por favor ingresa un precio válido mayor a 0");
@@ -35,7 +35,7 @@ const SubirProducto = () => {
       const formData = new FormData();
       formData.append("nombre", nombre);
       formData.append("descripcion", descripcion);
-      formData.append("precio", precioNumero);  // Convertido a número
+      formData.append("precio", precioNumero);  // Enviando número
       formData.append("categoria", categoria);
       if (imagenFile) formData.append("imagen", imagenFile);
 
@@ -118,6 +118,7 @@ const SubirProducto = () => {
 };
 
 export default SubirProducto;
+
 
 
 
