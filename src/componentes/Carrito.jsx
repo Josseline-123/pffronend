@@ -3,6 +3,9 @@ import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
+// Definir la URL base del backend (cambiar según entorno)
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+
 function Carrito() {
   const [items, setItems] = useState([]);
   const { token } = useContext(AuthContext);
@@ -14,7 +17,7 @@ function Carrito() {
 
   const cargarCarrito = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/carrito', {
+      const res = await axios.get(`${BASE_URL}/api/carrito`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -32,7 +35,7 @@ function Carrito() {
 
   const eliminarProducto = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/carrito/${id}`, {
+      await axios.delete(`${BASE_URL}/api/carrito/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       cargarCarrito();
@@ -44,12 +47,11 @@ function Carrito() {
   const calcularTotal = () => {
     return items.reduce((total, item) => {
       const precio = item.Producto?.precio || 0;
-      return total + (precio * item.cantidad);
+      return total + precio * item.cantidad;
     }, 0);
   };
 
   const handleCheckout = () => {
-    // Aquí puedes dirigir al usuario a la página de checkout
     navigate('/checkout');
   };
 
@@ -74,7 +76,10 @@ function Carrito() {
           </ul>
           <hr />
           <h3>Total de la compra: ${calcularTotal().toFixed(2)}</h3>
-          <button onClick={handleCheckout} style={{ marginTop: '1rem', padding: '10px 20px' }}>
+          <button
+            onClick={handleCheckout}
+            style={{ marginTop: '1rem', padding: '10px 20px' }}
+          >
             Checkout
           </button>
         </div>
@@ -84,10 +89,3 @@ function Carrito() {
 }
 
 export default Carrito;
-
-
-
-
-
-
-
