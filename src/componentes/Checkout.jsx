@@ -9,7 +9,7 @@ function Checkout() {
   const [total, setTotal] = useState(0);
   const navigate = useNavigate();
 
-  const API_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 
   useEffect(() => {
     if (token) cargarCarrito();
