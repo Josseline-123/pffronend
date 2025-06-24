@@ -1,15 +1,18 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+
 const SubirProducto = () => {
   const { token } = useContext(AuthContext);
+  const fileInputRef = useRef(null);
 
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [precio, setPrecio] = useState("");
   const [categoria, setCategoria] = useState("");
-  const [imagenFile, setImagenFile] = useState(null); // Guardar archivo (antes imagen como string)
+  const [imagenFile, setImagenFile] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,7 +23,6 @@ const SubirProducto = () => {
     }
 
     try {
-      // Crear FormData para enviar texto + archivo
       const formData = new FormData();
       formData.append("nombre", nombre);
       formData.append("descripcion", descripcion);
@@ -28,34 +30,32 @@ const SubirProducto = () => {
       formData.append("categoria", categoria);
       if (imagenFile) formData.append("imagen", imagenFile);
 
-      const config = {
+      await axios.post(`${BASE_URL}/api/productos`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data", // Importante para enviar archivo
+          "Content-Type": "multipart/form-data",
         },
-      };
+      });
 
-      await axios.post("http://localhost:5000/api/productos", formData, config);
       alert("Producto creado con éxito");
 
-      // Limpiar formulario
+      // Limpiar estado
       setNombre("");
       setDescripcion("");
       setPrecio("");
       setCategoria("");
       setImagenFile(null);
-
-      // Opcional: limpiar input file
-      e.target.reset();
+      if (fileInputRef.current) fileInputRef.current.value = "";
     } catch (error) {
+      console.error("❌ Error creando producto:", error);
       alert("Error creando producto");
-      console.error(error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} style={{ padding: "1rem", maxWidth: "400px" }}>
       <h2>Subir producto</h2>
+
       <input
         type="text"
         placeholder="Nombre"
@@ -64,6 +64,7 @@ const SubirProducto = () => {
         required
       />
       <br />
+
       <textarea
         placeholder="Descripción"
         value={descripcion}
@@ -71,6 +72,7 @@ const SubirProducto = () => {
         required
       />
       <br />
+
       <input
         type="number"
         placeholder="Precio"
@@ -79,28 +81,32 @@ const SubirProducto = () => {
         required
       />
       <br />
-      <select
-      value={categoria}
-      onChange={(e) => setCategoria(e.target.value)}
-      required
->
-     <option value="">Selecciona una categoría</option>
-     <option value="perros">Perros</option>
-     <option value="gatos">Gatos</option>
-</select>
 
+      <select
+        value={categoria}
+        onChange={(e) => setCategoria(e.target.value)}
+        required
+      >
+        <option value="">Selecciona una categoría</option>
+        <option value="perros">Perros</option>
+        <option value="gatos">Gatos</option>
+      </select>
       <br />
+
       <input
         type="file"
         accept="image/*"
         onChange={(e) => setImagenFile(e.target.files[0])}
+        ref={fileInputRef}
       />
       <br />
+
       <button type="submit">Crear producto</button>
     </form>
   );
 };
 
 export default SubirProducto;
+
 
 
