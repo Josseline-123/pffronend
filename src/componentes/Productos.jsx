@@ -2,9 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 
-// En Vite las variables de entorno empiezan con VITE_ y se acceden con import.meta.env
+// Variable base para la URL del backend
 const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
-
 
 function Productos() {
   const [productos, setProductos] = useState([]);
@@ -19,6 +18,7 @@ function Productos() {
     obtenerProductos();
   }, []);
 
+  // Obtener todos los productos
   const obtenerProductos = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/api/productos`);
@@ -28,6 +28,7 @@ function Productos() {
     }
   };
 
+  // Filtrar productos según filtros
   const filtrarProductos = async () => {
     try {
       const params = {};
@@ -43,13 +44,16 @@ function Productos() {
     }
   };
 
+  // Manejar cambio en cantidad con mínimo 1
   const handleCantidadChange = (productoId, nuevaCantidad) => {
+    const cantidadVal = Number(nuevaCantidad);
     setCantidades(prev => ({
       ...prev,
-      [productoId]: Number(nuevaCantidad)
+      [productoId]: cantidadVal > 0 ? cantidadVal : 1,
     }));
   };
 
+  // Agregar producto al carrito
   const agregarAlCarrito = async (productoId) => {
     if (!token) {
       alert('Debes iniciar sesión para agregar al carrito');
@@ -60,9 +64,7 @@ function Productos() {
 
     try {
       await axios.post(`${BASE_URL}/api/carrito`, { productoId, cantidad }, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        headers: { Authorization: `Bearer ${token}` },
       });
       alert(`Agregado ${cantidad} al carrito`);
     } catch (err) {
@@ -78,7 +80,11 @@ function Productos() {
       {/* Filtros */}
       <div className="row mb-4">
         <div className="col-md-3">
-          <select className="form-select" value={categoriaFiltro} onChange={(e) => setCategoriaFiltro(e.target.value)}>
+          <select
+            className="form-select"
+            value={categoriaFiltro}
+            onChange={e => setCategoriaFiltro(e.target.value)}
+          >
             <option value="">Todas las categorías</option>
             <option value="perros">Perros</option>
             <option value="gatos">Gatos</option>
@@ -89,8 +95,9 @@ function Productos() {
             type="number"
             className="form-control"
             placeholder="Precio mínimo"
+            min="0"
             value={precioMin}
-            onChange={(e) => setPrecioMin(e.target.value)}
+            onChange={e => setPrecioMin(e.target.value)}
           />
         </div>
         <div className="col-md-3">
@@ -98,8 +105,9 @@ function Productos() {
             type="number"
             className="form-control"
             placeholder="Precio máximo"
+            min="0"
             value={precioMax}
-            onChange={(e) => setPrecioMax(e.target.value)}
+            onChange={e => setPrecioMax(e.target.value)}
           />
         </div>
         <div className="col-md-3 d-flex gap-2">
@@ -168,5 +176,7 @@ function Productos() {
 }
 
 export default Productos;
+
+
 
 
