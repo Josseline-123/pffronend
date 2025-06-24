@@ -1,0 +1,14 @@
+.productos-page {
+  display: flex;
+  height: 100%;
+}
+
+.productos-page .sidebar {
+  width: 200px;
+  flex-shrink: 0;
+}
+
+.productos-page .productos-content {
+  flex-grow: 1;
+  padding: 1rem;
+}

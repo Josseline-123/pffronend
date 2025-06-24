@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider, AuthContext } from './context/AuthContext';
 import PrivateRoute from './componentes/PrivateRoute';
 import Navbar from './componentes/Navbar';
+import Home from './componentes/Home';
 import Productos from './componentes/Productos';
 import Login from './componentes/Login';
 import Register from './componentes/Register';
@@ -12,10 +14,20 @@ import Carrito from './componentes/Carrito';
 import Checkout from './componentes/Checkout';
 import MisOrdenes from './componentes/MisOrdenes';
 import Sidebar from './componentes/Sidebar';
-import ProtectedLayout from './componentes/ProtectedLayout'; // nuevo layout
-import { AuthProvider } from './context/AuthContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Home from './componentes/Home';
+
+// Wrapper para /productos que añade sidebar solo si hay token
+function ProductosWrapper() {
+  const { token } = useContext(AuthContext);
+  return (
+    <div style={{ display: 'flex' }}>
+      {token && <Sidebar />}
+      <div style={{ flexGrow: 1 }}>
+        <Productos />
+      </div>
+    </div>
+  );
+}
 
 function App() {
   return (
@@ -24,23 +36,60 @@ function App() {
         <Navbar />
         <Routes>
           {/* Rutas públicas */}
-           <Route path="/" element={<Home />} />
-          <Route path="/productos" element={<Productos />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/productos" element={<ProductosWrapper />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          
 
-
-
-          {/* Rutas protegidas con layout lateral */}
-          <Route element={<PrivateRoute><ProtectedLayout /></PrivateRoute>}>
-            <Route path="/subir-producto" element={<SubirProducto />} />
-            <Route path="/perfil" element={<Perfil />} />
-            <Route path="/editar-producto/:id" element={<EditarProducto />} />
-            <Route path="/carrito" element={<Carrito />} />
-            <Route path="/checkout" element={<Checkout />} />
-            <Route path="/mis-ordenes" element={<MisOrdenes />} />
-          </Route>
+          {/* Rutas protegidas */}
+          <Route path="/subir-producto" element={
+            <PrivateRoute>
+              <div style={{ display: 'flex' }}>
+                <Sidebar />
+                <div style={{ flexGrow: 1 }}><SubirProducto /></div>
+              </div>
+            </PrivateRoute>
+          }/>
+          <Route path="/perfil" element={
+            <PrivateRoute>
+              <div style={{ display: 'flex' }}>
+                <Sidebar />
+                <div style={{ flexGrow: 1 }}><Perfil /></div>
+              </div>
+            </PrivateRoute>
+          }/>
+          <Route path="/editar-producto/:id" element={
+            <PrivateRoute>
+              <div style={{ display: 'flex' }}>
+                <Sidebar />
+                <div style={{ flexGrow: 1 }}><EditarProducto /></div>
+              </div>
+            </PrivateRoute>
+          }/>
+          <Route path="/carrito" element={
+            <PrivateRoute>
+              <div style={{ display: 'flex' }}>
+                <Sidebar />
+                <div style={{ flexGrow: 1 }}><Carrito /></div>
+              </div>
+            </PrivateRoute>
+          }/>
+          <Route path="/checkout" element={
+            <PrivateRoute>
+              <div style={{ display: 'flex' }}>
+                <Sidebar />
+                <div style={{ flexGrow: 1 }}><Checkout /></div>
+              </div>
+            </PrivateRoute>
+          }/>
+          <Route path="/mis-ordenes" element={
+            <PrivateRoute>
+              <div style={{ display: 'flex' }}>
+                <Sidebar />
+                <div style={{ flexGrow: 1 }}><MisOrdenes /></div>
+              </div>
+            </PrivateRoute>
+          }/>
         </Routes>
       </Router>
     </AuthProvider>
@@ -48,6 +97,3 @@ function App() {
 }
 
 export default App;
-
-
-
