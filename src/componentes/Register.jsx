@@ -2,7 +2,9 @@ import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import './AuthBackground.css'; // Reutilizamos el mismo estilo que el login
+import './AuthBackground.css';
+
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
 const Register = () => {
   const [nombre, setNombre] = useState('');
@@ -28,7 +30,7 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/register', {
+      const response = await axios.post(`${BASE_URL}/api/auth/register`, {
         nombre,
         email,
         password,
@@ -37,12 +39,13 @@ const Register = () => {
       const { token, user } = response.data;
       login({ token, user });
       setError('');
+      navigate('/perfil');
     } catch (err) {
-      console.error('Error en el registro:', err);
+      console.error('❌ Error en el registro:', err);
 
       if (err.response?.status === 400) {
         const mensaje = err.response.data?.message || 'Error desconocido';
-        if (mensaje === 'El email ya está registrado') {
+        if (mensaje === 'El correo ya está registrado') {
           setError('Ya existe una cuenta con este correo electrónico');
         } else {
           setError(mensaje);
@@ -101,6 +104,7 @@ const Register = () => {
 };
 
 export default Register;
+
 
 
 
