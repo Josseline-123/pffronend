@@ -7,7 +7,7 @@ function Producto({ producto }) {
     <div className="card m-3" style={{ width: "18rem" }}>
       {producto.imagen && (
         <img
-          src={`${BASE_URL}/uploads/${producto.imagen}`}
+          src={producto.imagen}  // Usar la URL completa directamente
           alt={producto.nombre}
           style={{ width: "150px", height: "150px", objectFit: "cover" }}
         />
@@ -22,6 +22,7 @@ function Producto({ producto }) {
 }
 
 export default Producto;
+
 
 
 

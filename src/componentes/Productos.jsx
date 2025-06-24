@@ -5,8 +5,6 @@ import { AuthContext } from '../context/AuthContext';
 // Variable base para la URL del backend
 const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
-
-
 function Productos() {
   const [productos, setProductos] = useState([]);
   const [cantidades, setCantidades] = useState({});
@@ -135,7 +133,7 @@ function Productos() {
             <div className="card h-100">
               {producto.imagen && (
                 <img
-                  src={`${BASE_URL}/uploads/${producto.imagen}`}
+                  src={producto.imagen}  // Aquí cambio la ruta para usar la URL completa de Cloudinary
                   alt={producto.nombre}
                   className="card-img-top"
                   style={{ height: '200px', objectFit: 'cover' }}
