@@ -1,24 +1,16 @@
-import React from "react";
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
 function Producto({ producto }) {
   if (!producto) return null;
-  
-  console.log("Producto completo:", producto);
-  console.log("Imagen del producto:", producto.imagen);
-
-  
 
   return (
     <div className="card m-3" style={{ width: "18rem" }}>
       {producto.imagen && (
         <img
-          src={`http://localhost:5000/uploads/${producto.imagen}`}
+          src={`${BASE_URL}/uploads/${producto.imagen}`}
           alt={producto.nombre}
-         style={{ width: "150px", height: "150px", objectFit: "cover" }}
-         />
-
-
-        
+          style={{ width: "150px", height: "150px", objectFit: "cover" }}
+        />
       )}
       <div className="card-body">
         <h5 className="card-title">{producto.nombre}</h5>
