@@ -24,11 +24,18 @@ const SubirProducto = () => {
       return;
     }
 
+    // Validar que precio sea un número válido
+    const precioNumero = parseFloat(precio);
+    if (isNaN(precioNumero) || precioNumero <= 0) {
+      alert("Por favor ingresa un precio válido mayor a 0");
+      return;
+    }
+
     try {
       const formData = new FormData();
       formData.append("nombre", nombre);
       formData.append("descripcion", descripcion);
-      formData.append("precio", precio);
+      formData.append("precio", precioNumero);  // Convertido a número
       formData.append("categoria", categoria);
       if (imagenFile) formData.append("imagen", imagenFile);
 
@@ -80,6 +87,8 @@ const SubirProducto = () => {
         type="number"
         value={precio}
         onChange={(e) => setPrecio(e.target.value)}
+        min="0.01"
+        step="0.01"
         required
       /><br /><br />
 
@@ -109,5 +118,6 @@ const SubirProducto = () => {
 };
 
 export default SubirProducto;
+
 
 

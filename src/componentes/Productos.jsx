@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 
-// Variable base para la URL del backend
 const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
 function Productos() {
@@ -18,7 +17,6 @@ function Productos() {
     obtenerProductos();
   }, []);
 
-  // Obtener todos los productos
   const obtenerProductos = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/api/productos`);
@@ -28,7 +26,6 @@ function Productos() {
     }
   };
 
-  // Filtrar productos según filtros
   const filtrarProductos = async () => {
     try {
       const params = {};
@@ -44,7 +41,6 @@ function Productos() {
     }
   };
 
-  // Manejar cambio en cantidad con mínimo 1
   const handleCantidadChange = (productoId, nuevaCantidad) => {
     const cantidadVal = Number(nuevaCantidad);
     setCantidades(prev => ({
@@ -53,7 +49,6 @@ function Productos() {
     }));
   };
 
-  // Agregar producto al carrito
   const agregarAlCarrito = async (productoId) => {
     if (!token) {
       alert('Debes iniciar sesión para agregar al carrito');
@@ -71,6 +66,14 @@ function Productos() {
       console.error('❌ Error al agregar al carrito:', err);
       alert('Hubo un error al agregar al carrito');
     }
+  };
+
+  // Función para formatear precio en moneda local CLP
+  const formatearPrecio = (precio) => {
+    return new Intl.NumberFormat('es-CL', {
+      style: 'currency',
+      currency: 'CLP',
+    }).format(precio);
   };
 
   return (
@@ -128,46 +131,53 @@ function Productos() {
 
       {/* Lista de productos */}
       <div className="row">
-        {productos.length > 0 ? productos.map(producto => (
-          <div key={producto.id} className="col-md-4 mb-4">
-            <div className="card h-100">
-              {producto.imagen && (
-                <img
-                  src={producto.imagen}  // Aquí cambio la ruta para usar la URL completa de Cloudinary
-                  alt={producto.nombre}
-                  className="card-img-top"
-                  style={{ height: '200px', objectFit: 'cover' }}
-                />
-              )}
-              <div className="card-body d-flex flex-column">
-                <h5 className="card-title">{producto.nombre}</h5>
-                <p className="card-text">{producto.descripcion}</p>
-                <p className="card-text"><strong>${producto.precio}</strong></p>
+        {productos.length > 0 ? productos.map(producto => {
+          // Asegurar que la imagen sea URL absoluta
+          const imagenUrl = producto.imagen && !producto.imagen.startsWith('http')
+            ? `${BASE_URL}${producto.imagen}`
+            : producto.imagen;
 
-                <div className="mt-auto">
-                  <label>
-                    Cantidad:
-                    <input
-                      type="number"
-                      min="1"
-                      value={cantidades[producto.id] || 1}
-                      onChange={e => handleCantidadChange(producto.id, e.target.value)}
-                      className="form-control"
-                      style={{ width: '80px', display: 'inline-block', marginLeft: '8px' }}
-                    />
-                  </label>
+          return (
+            <div key={producto.id} className="col-md-4 mb-4">
+              <div className="card h-100">
+                {imagenUrl && (
+                  <img
+                    src={imagenUrl}
+                    alt={producto.nombre}
+                    className="card-img-top"
+                    style={{ height: '200px', objectFit: 'cover' }}
+                  />
+                )}
+                <div className="card-body d-flex flex-column">
+                  <h5 className="card-title">{producto.nombre}</h5>
+                  <p className="card-text">{producto.descripcion}</p>
+                  <p className="card-text"><strong>{formatearPrecio(producto.precio)}</strong></p>
 
-                  <button
-                    onClick={() => agregarAlCarrito(producto.id)}
-                    className="btn btn-primary mt-3 w-100"
-                  >
-                    Agregar al carrito
-                  </button>
+                  <div className="mt-auto">
+                    <label>
+                      Cantidad:
+                      <input
+                        type="number"
+                        min="1"
+                        value={cantidades[producto.id] || 1}
+                        onChange={e => handleCantidadChange(producto.id, e.target.value)}
+                        className="form-control"
+                        style={{ width: '80px', display: 'inline-block', marginLeft: '8px' }}
+                      />
+                    </label>
+
+                    <button
+                      onClick={() => agregarAlCarrito(producto.id)}
+                      className="btn btn-primary mt-3 w-100"
+                    >
+                      Agregar al carrito
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        )) : (
+          )
+        }) : (
           <p>No hay productos disponibles.</p>
         )}
       </div>
@@ -176,6 +186,7 @@ function Productos() {
 }
 
 export default Productos;
+
 
 
 
