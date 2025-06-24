@@ -35,7 +35,7 @@ const Navbar = () => {
           </>
         ) : (
           <>
-            <Link className="text-white text-decoration-none" to="/carrito">Carrito</Link>
+            <Link className="text-white text-decoration-none" to="/carrito">Carrito 🛒</Link>
             <Link className="text-white text-decoration-none" to="/productos">Productos</Link>
             <span className="text-white">Hola, {user?.nombre || "Usuario"}</span>
           </>

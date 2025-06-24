@@ -92,7 +92,6 @@ const SubirProducto = () => {
         <option value="">Selecciona una categoría</option>
         <option value="perros">Perros</option>
         <option value="gatos">Gatos</option>
-        <option value="otras">Otras mascotas</option>
       </select><br /><br />
 
       <label>Imagen:</label><br />
