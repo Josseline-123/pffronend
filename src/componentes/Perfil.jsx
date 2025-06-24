@@ -3,6 +3,9 @@ import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
+// URL base para el backend
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+
 const Perfil = () => {
   const { user, token } = useContext(AuthContext);
   const [misProductos, setMisProductos] = useState([]);
@@ -11,6 +14,7 @@ const Perfil = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Si no hay token ni usuario, no hace la petición
     if (!token || !user) {
       setLoading(false);
       return;
@@ -18,7 +22,7 @@ const Perfil = () => {
 
     const fetchMisProductos = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/productos/mios', {
+        const res = await axios.get(`${BASE_URL}/api/productos/mios`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setMisProductos(res.data);
@@ -37,7 +41,7 @@ const Perfil = () => {
     if (!window.confirm('¿Seguro que quieres eliminar este producto?')) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/productos/${id}`, {
+      await axios.delete(`${BASE_URL}/api/productos/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setMisProductos(misProductos.filter(p => p.id !== id));
@@ -55,7 +59,6 @@ const Perfil = () => {
   if (!user || !token) return <p>Debes iniciar sesión para ver tu perfil.</p>;
   if (loading) return <p>Cargando tus productos...</p>;
   if (error) return <p>{error}</p>;
-
 
   return (
     <div className="perfil-container" style={{ padding: '2rem' }}>
@@ -83,4 +86,5 @@ const Perfil = () => {
 };
 
 export default Perfil;
+
 

@@ -5,6 +5,8 @@ import { AuthContext } from '../context/AuthContext';
 // Variable base para la URL del backend
 const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
+
+
 function Productos() {
   const [productos, setProductos] = useState([]);
   const [cantidades, setCantidades] = useState({});
