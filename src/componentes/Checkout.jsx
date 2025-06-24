@@ -17,7 +17,7 @@ function Checkout() {
 
   const cargarCarrito = async () => {
     try {
-      const res = await axios.get(`${API_URL}/api/carrito`, {
+      const res = await axios.get(`${BASE_URL}/api/carrito`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -46,12 +46,12 @@ function Checkout() {
       const orden = { productos, total };
 
       // Crear la orden
-      await axios.post(`${API_URL}/api/ordenes`, orden, {
+      await axios.post(`${BASE_URL}/api/ordenes`, orden, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
       // Vaciar el carrito en el backend
-      await axios.delete(`${API_URL}/api/carrito`, {
+      await axios.delete(`${BASE_URL}/api/carrito`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -91,6 +91,3 @@ function Checkout() {
 }
 
 export default Checkout;
-
-
-
