@@ -1,12 +1,14 @@
 import React, { useState, useContext, useRef } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 
 const SubirProducto = () => {
   const { token } = useContext(AuthContext);
   const fileInputRef = useRef(null);
+  const navigate = useNavigate();
 
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
@@ -37,18 +39,20 @@ const SubirProducto = () => {
         },
       });
 
-      alert("Producto creado con éxito");
+      alert("✅ Producto creado con éxito");
 
-      // Limpiar estado
+      // Limpiar campos
       setNombre("");
       setDescripcion("");
       setPrecio("");
       setCategoria("");
       setImagenFile(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
+
+      navigate("/perfil");
     } catch (error) {
-      console.error("❌ Error creando producto:", error);
-      alert("Error creando producto");
+      console.error("❌ Error creando producto:", error.response?.data || error);
+      alert("Error al crear producto");
     }
   };
 
@@ -56,32 +60,30 @@ const SubirProducto = () => {
     <form onSubmit={handleSubmit} style={{ padding: "1rem", maxWidth: "400px" }}>
       <h2>Subir producto</h2>
 
+      <label>Nombre:</label><br />
       <input
         type="text"
-        placeholder="Nombre"
         value={nombre}
         onChange={(e) => setNombre(e.target.value)}
         required
-      />
-      <br />
+      /><br /><br />
 
+      <label>Descripción:</label><br />
       <textarea
-        placeholder="Descripción"
         value={descripcion}
         onChange={(e) => setDescripcion(e.target.value)}
         required
-      />
-      <br />
+      /><br /><br />
 
+      <label>Precio:</label><br />
       <input
         type="number"
-        placeholder="Precio"
         value={precio}
         onChange={(e) => setPrecio(e.target.value)}
         required
-      />
-      <br />
+      /><br /><br />
 
+      <label>Categoría:</label><br />
       <select
         value={categoria}
         onChange={(e) => setCategoria(e.target.value)}
@@ -90,17 +92,17 @@ const SubirProducto = () => {
         <option value="">Selecciona una categoría</option>
         <option value="perros">Perros</option>
         <option value="gatos">Gatos</option>
-        <option value="gatos">Otras mascotas</option>
-      </select>
-      <br />
+        <option value="otras">Otras mascotas</option>
+      </select><br /><br />
 
+      <label>Imagen:</label><br />
       <input
         type="file"
         accept="image/*"
         onChange={(e) => setImagenFile(e.target.files[0])}
         ref={fileInputRef}
-      />
-      <br />
+        required
+      /><br /><br />
 
       <button type="submit">Crear producto</button>
     </form>
@@ -108,6 +110,5 @@ const SubirProducto = () => {
 };
 
 export default SubirProducto;
-
 
 
