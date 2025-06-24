@@ -27,19 +27,26 @@ const EditarProducto = () => {
         const res = await axios.get(`${BASE_URL}/api/productos/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setProducto(res.data);
+        setProducto({
+          nombre: res.data.nombre || '',
+          descripcion: res.data.descripcion || '',
+          precio: res.data.precio || '',
+          categoria: res.data.categoria || '',
+        });
       } catch (err) {
         console.error('❌ Error al cargar el producto:', err);
+        alert('Error al cargar el producto');
       } finally {
         setCargando(false);
       }
     };
 
-    fetchProducto();
+    if (token) fetchProducto();
   }, [id, token, BASE_URL]);
 
   const handleChange = (e) => {
-    setProducto({ ...producto, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setProducto((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -52,7 +59,7 @@ const EditarProducto = () => {
       formData.append('precio', producto.precio);
       formData.append('categoria', producto.categoria);
       if (imagenFile) {
-        formData.append('imagen', imagenFile); // solo si hay nueva imagen
+        formData.append('imagen', imagenFile);
       }
 
       await axios.put(`${BASE_URL}/api/productos/${id}`, formData, {
@@ -112,7 +119,7 @@ const EditarProducto = () => {
           <input
             type="text"
             name="categoria"
-            value={producto.categoria || ''}
+            value={producto.categoria}
             onChange={handleChange}
           />
         </div>
@@ -132,4 +139,5 @@ const EditarProducto = () => {
 };
 
 export default EditarProducto;
+
 
