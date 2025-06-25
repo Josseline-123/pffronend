@@ -11,7 +11,7 @@ function Productos() {
   const [productos, setProductos] = useState([]);
   const [error, setError] = useState(null);
 
-  // Función para obtener productos desde backend
+  // Obtener productos desde el backend
   const obtenerProductos = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/api/productos`);
@@ -38,20 +38,35 @@ function Productos() {
 
         <div className="productos-list">
           {productos.length === 0 && !error && <p>No hay productos para mostrar.</p>}
-          {productos.map((producto) => (
-            <div key={producto.id} className="producto-card">
-              {producto.imagen && (
-                <img
-                  src={producto.imagen}
-                  alt={producto.nombre}
-                  className="producto-imagen"
-                />
-              )}
-              <h3>{producto.nombre}</h3>
-              <p>{producto.descripcion}</p>
-              <p><strong>Precio:</strong> ${producto.precio}</p>
-            </div>
-          ))}
+
+          {productos.map((producto) => {
+            const imagenUrl =
+              producto.imagen && !producto.imagen.startsWith('http')
+                ? `${BASE_URL}${producto.imagen}`
+                : producto.imagen;
+
+            const precioFormateado = new Intl.NumberFormat('es-CL', {
+              style: 'currency',
+              currency: 'CLP',
+            }).format(producto.precio);
+
+            return (
+              <div key={producto.id} className="producto-card">
+                {imagenUrl && (
+                  <img
+                    src={imagenUrl}
+                    alt={producto.nombre}
+                    className="producto-imagen"
+                  />
+                )}
+                <div className="producto-body">
+                  <h5 className="producto-titulo">{producto.nombre}</h5>
+                  <p className="producto-descripcion">{producto.descripcion}</p>
+                  <p className="producto-precio">{precioFormateado}</p>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
@@ -59,6 +74,3 @@ function Productos() {
 }
 
 export default Productos;
-
-
-
