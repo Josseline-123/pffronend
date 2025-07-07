@@ -55,5 +55,22 @@
 .producto-precio {
   font-size: 1rem;
   font-weight: bold;
-  color: #28a745;
+  color: #0a0b0a;
+}
+.boton-agregar-carrito {
+  background-color: #007bff; /* Azul brillante */
+  color: white; /* Letras blancas */
+  border: none;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.boton-agregar-carrito:hover {
+  background-color: #0056b3; /* Azul más oscuro al pasar el mouse */
 }

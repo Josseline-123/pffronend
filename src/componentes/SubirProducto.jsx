@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 
 const SubirProducto = () => {
-  const { token, user } = useContext(AuthContext); // Asegúrate de tener user en el contexto
+  const { token } = useContext(AuthContext);
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
 
@@ -17,7 +17,6 @@ const SubirProducto = () => {
   const [imagenFile, setImagenFile] = useState(null);
 
   const [productoCreado, setProductoCreado] = useState(null);
-  const [verInfo, setVerInfo] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,8 +48,6 @@ const SubirProducto = () => {
       });
 
       alert("✅ Producto creado con éxito");
-
-      // Guardamos el producto en estado
       setProductoCreado(response.data);
 
       // Limpiar campos
@@ -120,20 +117,9 @@ const SubirProducto = () => {
         <button type="submit">Crear producto</button>
       </form>
 
-      {/* Mostrar mensaje si se creó un producto */}
       {productoCreado && (
         <div style={{ marginTop: "2rem", borderTop: "1px solid #ccc", paddingTop: "1rem" }}>
           <p>🎉 Producto "<strong>{productoCreado.nombre}</strong>" creado correctamente.</p>
-          <button onClick={() => setVerInfo(!verInfo)}>
-            {verInfo ? "Ocultar datos del vendedor" : "Ver más"}
-          </button>
-
-          {verInfo && user && (
-            <div style={{ marginTop: "1rem", backgroundColor: "#f0f0f0", padding: "1rem" }}>
-              <p><strong>📧 Correo:</strong> {user.email}</p>
-          
-            </div>
-          )}
         </div>
       )}
     </div>
@@ -141,3 +127,4 @@ const SubirProducto = () => {
 };
 
 export default SubirProducto;
+

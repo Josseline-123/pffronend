@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import './Carrito.css';
 
-// Definir la URL base del backend (cambiar según entorno)
 const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
 function Carrito() {
   const [items, setItems] = useState([]);
   const { token } = useContext(AuthContext);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    if (token) cargarCarrito();
+    if (token) {
+      cargarCarrito();
+    }
   }, [token]);
 
   const cargarCarrito = async () => {
@@ -22,11 +22,7 @@ function Carrito() {
       });
 
       const data = res.data;
-      if (Array.isArray(data)) {
-        setItems(data);
-      } else {
-        setItems([]);
-      }
+      setItems(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Error al cargar el carrito:', err);
       setItems([]);
@@ -51,37 +47,39 @@ function Carrito() {
     }, 0);
   };
 
-  const handleCheckout = () => {
-    navigate('/checkout');
-  };
-
   return (
-    <div>
+    <div className="carrito-container">
       <h2>Carrito de Compras</h2>
 
-      {Array.isArray(items) && items.length === 0 ? (
+      {items.length === 0 ? (
         <p>Tu carrito está vacío</p>
       ) : (
         <div>
-          <ul>
-            {items.map((item) => (
-              <li key={item.id} style={{ marginBottom: '1rem' }}>
-                <strong>{item.Producto?.nombre || 'Producto desconocido'}</strong><br />
-                Precio unitario: ${item.Producto?.precio?.toFixed(2) || '0.00'}<br />
-                Cantidad: {item.cantidad}<br />
-                Subtotal: ${(item.Producto?.precio * item.cantidad).toFixed(2)}<br />
-                <button onClick={() => eliminarProducto(item.id)}>Eliminar</button>
-              </li>
-            ))}
+          <ul className="carrito-lista">
+            {items.map((item) => {
+              const producto = item.Producto || {};
+              const vendedor = producto.vendedor || {}; // ✅ alias correcto
+
+              return (
+                <li key={item.id} className="carrito-item">
+                  <strong>{producto.nombre || 'Producto desconocido'}</strong><br />
+                  Precio unitario: ${producto.precio?.toFixed(0) || '0'}<br />
+                  Cantidad: {item.cantidad}<br />
+                  Subtotal: ${(producto.precio * item.cantidad).toFixed(0)}<br /><br />
+
+                  <span><strong>Vendedor:</strong> {vendedor.nombre || 'Sin datos'}</span><br />
+                  <span><strong>Email:</strong> {vendedor.email || 'Sin datos'}</span><br /><br />
+
+                  <button className="boton-eliminar" onClick={() => eliminarProducto(item.id)}>
+                    Eliminar
+                  </button>
+                </li>
+              );
+            })}
           </ul>
           <hr />
-          <h3>Total de la compra: ${calcularTotal().toFixed(2)}</h3>
-          <button
-            onClick={handleCheckout}
-            style={{ marginTop: '1rem', padding: '10px 20px' }}
-          >
-            Checkout
-          </button>
+          <h3>Total de la compra: ${calcularTotal().toFixed(0)}</h3>
+          <p>Gracias por su compra. Contacte directamente a los vendedores para coordinar el pago y la entrega.</p>
         </div>
       )}
     </div>
@@ -89,3 +87,4 @@ function Carrito() {
 }
 
 export default Carrito;
+

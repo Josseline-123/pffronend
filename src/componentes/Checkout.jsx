@@ -86,6 +86,8 @@ function Checkout() {
           <button onClick={confirmarCompra}>Confirmar compra</button>
         </div>
       )}
+
+      
     </div>
   );
 }
