@@ -5,6 +5,58 @@ import Sidebar from './Sidebar';
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
+const styles = {
+  page: {
+    display: 'flex',
+    padding: '2rem',
+    gap: '2rem',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+  },
+  content: {
+    flex: 1,
+    padding: '1rem',
+  },
+  card: {
+    width: '250px',
+    border: '1px solid #ddd',
+    borderRadius: '8px',
+    padding: '1rem',
+    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+    marginBottom: '1rem',
+    textAlign: 'center',
+  },
+  image: {
+    width: '100%',
+    height: '180px',
+    objectFit: 'cover',
+    borderRadius: '6px',
+  },
+  title: {
+    fontSize: '1.1rem',
+    fontWeight: 'bold',
+    marginTop: '0.5rem',
+  },
+  description: {
+    fontSize: '0.9rem',
+    color: '#555',
+    margin: '0.5rem 0',
+  },
+  price: {
+    fontWeight: 'bold',
+    color: '#28a745',
+    marginBottom: '0.5rem',
+  },
+  button: {
+    backgroundColor: '#007bff',
+    color: '#fff',
+    border: 'none',
+    padding: '0.5rem 1rem',
+    borderRadius: '5px',
+    cursor: 'pointer',
+  },
+};
+
 function Productos() {
   const { token } = useContext(AuthContext);
   const [productos, setProductos] = useState([]);
@@ -44,15 +96,15 @@ function Productos() {
   }, []);
 
   return (
-    <div className="productos-page">
+    <div style={styles.page}>
       {token && <Sidebar />}
 
-      <div className="productos-content">
-        <h2 className="text-center mb-4">Productos</h2>
+      <div style={styles.content}>
+        <h2 style={{ textAlign: 'center', marginBottom: '1rem' }}>Productos</h2>
 
-        {error && <p className="error">{error}</p>}
+        {error && <p style={{ color: 'red' }}>{error}</p>}
 
-        <div className="productos-list">
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', justifyContent: 'center' }}>
           {productos.length === 0 && !error && (
             <p>No hay productos para mostrar.</p>
           )}
@@ -71,23 +123,21 @@ function Productos() {
             }).format(producto.precio || 0);
 
             return (
-              <div key={producto.id} className="producto-card">
+              <div key={producto.id} style={styles.card}>
                 <img
                   src={imagenUrl}
                   alt={producto.nombre || 'Producto'}
-                  className="producto-imagen"
+                  style={styles.image}
                 />
-                <div className="producto-body">
-                  <h5 className="producto-titulo">{producto.nombre}</h5>
-                  <p className="producto-descripcion">{producto.descripcion}</p>
-                  <p className="producto-precio">{precioFormateado}</p>
-                  <button
-                    className="boton-agregar-carrito"
-                    onClick={() => agregarAlCarrito(producto.id)}
-                  >
-                    Agregar al carrito
-                  </button>
-                </div>
+                <h5 style={styles.title}>{producto.nombre}</h5>
+                <p style={styles.description}>{producto.descripcion}</p>
+                <p style={styles.price}>{precioFormateado}</p>
+                <button
+                  style={styles.button}
+                  onClick={() => agregarAlCarrito(producto.id)}
+                >
+                  Agregar al carrito
+                </button>
               </div>
             );
           })}
@@ -98,6 +148,7 @@ function Productos() {
 }
 
 export default Productos;
+
 
 
 
