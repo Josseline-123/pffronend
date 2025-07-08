@@ -93,7 +93,15 @@ function Productos() {
       alert('Producto agregado al carrito');
     } catch (err) {
       console.error('Error al agregar al carrito:', err);
-      alert('Debes iniciar sesión para agregar al carrito');
+      const mensaje = err.response?.data?.error;
+
+      if (mensaje === 'No puedes comprar tu propio producto') {
+        alert('No puedes agregar tu propio producto al carrito');
+      } else if (err.response?.status === 401) {
+        alert('Debes iniciar sesión para agregar al carrito');
+      } else {
+        alert('Ocurrió un error al agregar al carrito');
+      }
     }
   };
 
