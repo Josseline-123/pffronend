@@ -17,7 +17,7 @@ import MisOrdenes from './componentes/MisOrdenes';
 import Sidebar from './componentes/Sidebar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-// 👇 Wrapper para mostrar Sidebar solo si hay token en /productos
+// Wrapper para mostrar Sidebar solo en /productos si hay token
 function ProductosWrapper() {
   const { token } = useContext(AuthContext);
 

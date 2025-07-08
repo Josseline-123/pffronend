@@ -1,19 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
-import Sidebar from './Sidebar';
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
 const styles = {
-  layout: {
-    display: 'flex',
-    minHeight: '100vh',
-  },
-  sidebar: {
-    width: '250px',
-    flexShrink: 0,
-  },
   content: {
     flex: 1,
     padding: '2rem',
@@ -110,55 +101,47 @@ function Productos() {
   }, []);
 
   return (
-    <div style={styles.layout}>
-      {token && (
-        <div style={styles.sidebar}>
-          <Sidebar />
-        </div>
-      )}
+    <div style={styles.content}>
+      <h2 style={{ textAlign: 'center', marginBottom: '1.5rem' }}>Productos</h2>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
 
-      <div style={styles.content}>
-        <h2 style={{ textAlign: 'center', marginBottom: '1.5rem' }}>Productos</h2>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
+      <div style={styles.grid}>
+        {productos.length === 0 && !error ? (
+          <p>No hay productos para mostrar.</p>
+        ) : (
+          productos.map((producto) => {
+            if (!producto) return null;
 
-        <div style={styles.grid}>
-          {productos.length === 0 && !error ? (
-            <p>No hay productos para mostrar.</p>
-          ) : (
-            productos.map((producto) => {
-              if (!producto) return null;
+            const imagenUrl =
+              producto.imagen && !producto.imagen.startsWith('http')
+                ? `${BASE_URL}${producto.imagen}`
+                : producto.imagen || 'https://via.placeholder.com/200';
 
-              const imagenUrl =
-                producto.imagen && !producto.imagen.startsWith('http')
-                  ? `${BASE_URL}${producto.imagen}`
-                  : producto.imagen || 'https://via.placeholder.com/200';
+            const precioFormateado = new Intl.NumberFormat('es-CL', {
+              style: 'currency',
+              currency: 'CLP',
+            }).format(producto.precio || 0);
 
-              const precioFormateado = new Intl.NumberFormat('es-CL', {
-                style: 'currency',
-                currency: 'CLP',
-              }).format(producto.precio || 0);
-
-              return (
-                <div key={producto.id} style={styles.card}>
-                  <img
-                    src={imagenUrl}
-                    alt={producto.nombre || 'Producto'}
-                    style={styles.image}
-                  />
-                  <h5 style={styles.title}>{producto.nombre}</h5>
-                  <p style={styles.description}>{producto.descripcion}</p>
-                  <p style={styles.price}>{precioFormateado}</p>
-                  <button
-                    style={styles.button}
-                    onClick={() => agregarAlCarrito(producto.id)}
-                  >
-                    Agregar al carrito
-                  </button>
-                </div>
-              );
-            })
-          )}
-        </div>
+            return (
+              <div key={producto.id} style={styles.card}>
+                <img
+                  src={imagenUrl}
+                  alt={producto.nombre || 'Producto'}
+                  style={styles.image}
+                />
+                <h5 style={styles.title}>{producto.nombre}</h5>
+                <p style={styles.description}>{producto.descripcion}</p>
+                <p style={styles.price}>{precioFormateado}</p>
+                <button
+                  style={styles.button}
+                  onClick={() => agregarAlCarrito(producto.id)}
+                >
+                  Agregar al carrito
+                </button>
+              </div>
+            );
+          })
+        )}
       </div>
     </div>
   );
