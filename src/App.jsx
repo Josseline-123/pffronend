@@ -1,3 +1,4 @@
+// App.js
 import React, { useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider, AuthContext } from './context/AuthContext';
@@ -14,7 +15,6 @@ import Carrito from './componentes/Carrito';
 import Checkout from './componentes/Checkout';
 import MisOrdenes from './componentes/MisOrdenes';
 import Sidebar from './componentes/Sidebar';
-import Footer from './componentes/Footer'; // ✅ Importamos el footer
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Wrapper para mostrar Sidebar solo en /productos si hay token
@@ -35,31 +35,25 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-          <Navbar />
-          <div style={{ flex: 1 }}>
-            <Routes>
-              {/* Rutas públicas */}
-              <Route path="/" element={<Home />} />
-              <Route path="/productos" element={<ProductosWrapper />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
+        <Navbar />
+        <Routes>
+          {/* Rutas públicas */}
+          <Route path="/" element={<Home />} />
+          <Route path="/productos" element={<ProductosWrapper />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
-              {/* Rutas privadas */}
-              <Route path="/subir-producto" element={<PrivateRoute><SubirProducto /></PrivateRoute>} />
-              <Route path="/perfil" element={<PrivateRoute><Perfil /></PrivateRoute>} />
-              <Route path="/editar-producto/:id" element={<PrivateRoute><EditarProducto /></PrivateRoute>} />
-              <Route path="/carrito" element={<PrivateRoute><Carrito /></PrivateRoute>} />
-              <Route path="/checkout" element={<PrivateRoute><Checkout /></PrivateRoute>} />
-              <Route path="/mis-ordenes" element={<PrivateRoute><MisOrdenes /></PrivateRoute>} />
-            </Routes>
-          </div>
-          <Footer /> {/* ✅ Footer en la parte inferior */}
-        </div>
+          {/* Rutas privadas */}
+          <Route path="/subir-producto" element={<PrivateRoute><SubirProducto /></PrivateRoute>} />
+          <Route path="/perfil" element={<PrivateRoute><Perfil /></PrivateRoute>} />
+          <Route path="/editar-producto/:id" element={<PrivateRoute><EditarProducto /></PrivateRoute>} />
+          <Route path="/carrito" element={<PrivateRoute><Carrito /></PrivateRoute>} />
+          <Route path="/checkout" element={<PrivateRoute><Checkout /></PrivateRoute>} />
+          <Route path="/mis-ordenes" element={<PrivateRoute><MisOrdenes /></PrivateRoute>} />
+        </Routes>
       </Router>
     </AuthProvider>
   );
 }
 
 export default App;
-
