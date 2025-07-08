@@ -6,16 +6,23 @@ import Sidebar from './Sidebar';
 const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
 const styles = {
-  page: {
+  layout: {
     display: 'flex',
-    padding: '2rem',
-    gap: '2rem',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
+    minHeight: '100vh',
+  },
+  sidebar: {
+    width: '250px',
+    flexShrink: 0,
   },
   content: {
     flex: 1,
-    padding: '1rem',
+    padding: '2rem',
+  },
+  grid: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: '1.5rem',
+    justifyContent: 'center',
   },
   card: {
     width: '250px',
@@ -23,7 +30,6 @@ const styles = {
     borderRadius: '8px',
     padding: '1rem',
     boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-    marginBottom: '1rem',
     textAlign: 'center',
   },
   image: {
@@ -96,51 +102,54 @@ function Productos() {
   }, []);
 
   return (
-    <div style={styles.page}>
-      {token && <Sidebar />}
+    <div style={styles.layout}>
+      {token && (
+        <div style={styles.sidebar}>
+          <Sidebar />
+        </div>
+      )}
 
       <div style={styles.content}>
-        <h2 style={{ textAlign: 'center', marginBottom: '1rem' }}>Productos</h2>
-
+        <h2 style={{ textAlign: 'center', marginBottom: '1.5rem' }}>Productos</h2>
         {error && <p style={{ color: 'red' }}>{error}</p>}
 
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', justifyContent: 'center' }}>
-          {productos.length === 0 && !error && (
+        <div style={styles.grid}>
+          {productos.length === 0 && !error ? (
             <p>No hay productos para mostrar.</p>
+          ) : (
+            productos.map((producto) => {
+              if (!producto) return null;
+
+              const imagenUrl =
+                producto.imagen && !producto.imagen.startsWith('http')
+                  ? `${BASE_URL}${producto.imagen}`
+                  : producto.imagen || 'https://via.placeholder.com/200';
+
+              const precioFormateado = new Intl.NumberFormat('es-CL', {
+                style: 'currency',
+                currency: 'CLP',
+              }).format(producto.precio || 0);
+
+              return (
+                <div key={producto.id} style={styles.card}>
+                  <img
+                    src={imagenUrl}
+                    alt={producto.nombre || 'Producto'}
+                    style={styles.image}
+                  />
+                  <h5 style={styles.title}>{producto.nombre}</h5>
+                  <p style={styles.description}>{producto.descripcion}</p>
+                  <p style={styles.price}>{precioFormateado}</p>
+                  <button
+                    style={styles.button}
+                    onClick={() => agregarAlCarrito(producto.id)}
+                  >
+                    Agregar al carrito
+                  </button>
+                </div>
+              );
+            })
           )}
-
-          {productos.map((producto) => {
-            if (!producto) return null;
-
-            const imagenUrl =
-              producto.imagen && !producto.imagen.startsWith('http')
-                ? `${BASE_URL}${producto.imagen}`
-                : producto.imagen || 'https://via.placeholder.com/200';
-
-            const precioFormateado = new Intl.NumberFormat('es-CL', {
-              style: 'currency',
-              currency: 'CLP',
-            }).format(producto.precio || 0);
-
-            return (
-              <div key={producto.id} style={styles.card}>
-                <img
-                  src={imagenUrl}
-                  alt={producto.nombre || 'Producto'}
-                  style={styles.image}
-                />
-                <h5 style={styles.title}>{producto.nombre}</h5>
-                <p style={styles.description}>{producto.descripcion}</p>
-                <p style={styles.price}>{precioFormateado}</p>
-                <button
-                  style={styles.button}
-                  onClick={() => agregarAlCarrito(producto.id)}
-                >
-                  Agregar al carrito
-                </button>
-              </div>
-            );
-          })}
         </div>
       </div>
     </div>
@@ -148,6 +157,7 @@ function Productos() {
 }
 
 export default Productos;
+
 
 
 
