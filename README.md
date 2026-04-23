@@ -7,7 +7,7 @@ Aplicación desarrollada con **React** conectada a una **API REST propia**.
 ---
 
 ## 🚀 Demo del proyecto
-*(desplegado en Vercel)*
+*https://pffronend.vercel.app/*
 
 ---
 
@@ -44,5 +44,12 @@ src/
 │── services/
 │── App.jsx
 │── main.jsx
+
+
+Autora
+Josseline Farías Gallardo
+Full Stack Developer
+
+
 
 
