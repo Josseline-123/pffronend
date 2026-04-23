@@ -1,12 +1,48 @@
-# React + Vite
+# 🐾 BestPet Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend del marketplace **BestPet**, una aplicación tipo e-commerce para compra y venta de productos para mascotas.
 
-Currently, two official plugins are available:
+Aplicación desarrollada con **React** conectada a una **API REST propia**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 🚀 Demo del proyecto
+*(desplegado en Vercel)*
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🛠️ Tecnologías utilizadas
+
+- React
+- Vite
+- React Router DOM
+- Axios
+- Context API
+- CSS
+
+---
+
+## ✨ Funcionalidades principales
+
+- Registro e inicio de sesión de usuarios
+- Autenticación con JWT
+- Visualización de productos desde API
+- Agregar productos al carrito
+- Actualización del carrito en tiempo real
+- Checkout de compra
+- Protección de rutas privadas
+- Navbar con contador de carrito
+
+---
+
+## 📂 Estructura del proyecto
+
+src/
+│── components/
+│── pages/
+│── context/
+│── services/
+│── App.jsx
+│── main.jsx
+
+
