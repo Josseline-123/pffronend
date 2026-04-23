@@ -7,7 +7,6 @@ Aplicación desarrollada con **React** conectada a una **API REST propia**.
 ---
 
 ## 🚀 Demo del proyecto
-
 🔗 https://pffronend.vercel.app/
 
 ---
@@ -38,7 +37,7 @@ Aplicación desarrollada con **React** conectada a una **API REST propia**.
 
 ## 📂 Estructura del proyecto
 
-
+```
 src/
 │── components/
 │── pages/
@@ -46,13 +45,13 @@ src/
 │── services/
 │── App.jsx
 │── main.jsx
-
+```
 
 ---
 
 ## 🔗 Conexión con el Backend
 
-Este frontend consume la API desarrollada en Node.js (BestPet API).
+Este frontend consume la API desarrollada en Node.js (**BestPet API**).
 
 ---
 
@@ -62,7 +61,17 @@ Este frontend consume la API desarrollada en Node.js (BestPet API).
 git clone https://github.com/TU-USUARIO/bestpet-frontend
 npm install
 npm run dev
+```
 
 La app se ejecuta en:
 
+```
 http://localhost:5173
+```
+
+---
+
+## 👩‍💻 Autora
+
+**Josseline Farías Gallardo**  
+Full Stack Developer
