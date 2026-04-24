@@ -58,7 +58,7 @@ Este frontend consume la API desarrollada en Node.js (**BestPet API**).
 ## ⚙️ Instalación y ejecución
 
 ```bash
-git clone https://github.com/TU-USUARIO/bestpet-frontend
+git clone https://github.com/josseline-123/bestpet-frontend
 npm install
 npm run dev
 ```
