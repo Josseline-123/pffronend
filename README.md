@@ -29,17 +29,17 @@ Navbar con contador de productos
 
 Este frontend consume una API desarrollada en Node.js:
 
-👉 Backend: https://backendbestpet.onrender.com/
+👉 https://backendbestpet.onrender.com/
 
 📂 Estructura del proyecto
-
 src/
-├── assets/        # Imágenes, iconos y archivos estáticos.
-├── componentes/   # Componentes reutilizables de la interfaz.
-├── context/       # Lógica del Context API para el estado global.
-├── App.jsx        # Componente principal y definición de rutas.
-└── main.jsx       # Punto de entrada de la aplicación.
-
+├── assets/        # Imágenes, iconos y archivos estáticos
+├── components/    # Componentes reutilizables
+├── pages/         # Vistas de la aplicación
+├── context/       # Estado global (Context API)
+├── services/      # Consumo de API
+├── App.jsx        # Rutas principales
+└── main.jsx       # Punto de entrada
 ⚙️ Instalación y ejecución local
 git clone https://github.com/josseline-123/bestpet-frontend
 cd bestpet-frontend
@@ -52,6 +52,5 @@ http://localhost:5173
 👩‍💻 Desarrolladora
 
 Josseline Farias
-Desarrolladora Full Stack en formación
-GitHub: https://github.com/josseline-123s Gallardo**  
-Full Stack Developer
+Full Stack Developer en formación
+GitHub: https://github.com/josseline-123
