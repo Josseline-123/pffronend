@@ -32,13 +32,14 @@ Este frontend consume una API desarrollada en Node.js:
 👉 Backend: https://backendbestpet.onrender.com/
 
 📂 Estructura del proyecto
+
 src/
-│── components/
-│── pages/
-│── context/
-│── services/
-│── App.jsx
-│── main.jsx
+├── assets/        # Imágenes, iconos y archivos estáticos.
+├── componentes/   # Componentes reutilizables de la interfaz.
+├── context/       # Lógica del Context API para el estado global.
+├── App.jsx        # Componente principal y definición de rutas.
+└── main.jsx       # Punto de entrada de la aplicación.
+
 ⚙️ Instalación y ejecución local
 git clone https://github.com/josseline-123/bestpet-frontend
 cd bestpet-frontend
